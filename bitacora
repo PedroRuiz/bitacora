@@ -1,0 +1,109 @@
+#!/usr/bin/php -q
+<?php
+
+set_time_limit(0);
+@ob_end_flush();
+ob_implicit_flush(true);
+
+class prompt {
+  var $tty;
+
+  function prompt() {
+    if (substr(PHP_OS, 0, 3) == "WIN") {
+      $this->tty = fOpen("\con", "rb");
+    } else {
+      if (!($this->tty = fOpen("/dev/tty", "r"))) {
+        $this->tty = fOpen("php://stdin", "r");
+      }
+    }
+  }
+
+  function get($string, $length = 1024) {
+    echo $string;
+    $result = trim(fGets($this->tty, $length));
+    echo "\n";
+    return $result;
+  }
+}
+
+class bitacora
+{
+	var $file="/home/pedro/bin/bitacora.txt";
+
+	function title()
+	{
+		echo " ______  __________________ _______  _______  _______  _______  _______ 
+(  ___ \ \__   __/\__   __/(  ___  )(  ____ \(  ___  )(  ____ )(  ___  )
+| (   ) )   ) (      ) (   | (   ) || (    \/| (   ) || (    )|| (   ) |
+| (__/ /    | |      | |   | (___) || |      | |   | || (____)|| (___) |
+|  __ (     | |      | |   |  ___  || |      | |   | ||     __)|  ___  |
+| (  \ \    | |      | |   | (   ) || |      | |   | || (\ (   | (   ) |
+| )___) )___) (___   | |   | )   ( || (____/\| (___) || ) \ \__| )   ( |
+|/ \___/ \_______/   )_(   |/     \|(_______/(_______)|/   \__/|/     \|";
+	}
+
+	function author()
+	{
+		$copy_r_date = (date('Y') > 2017) ? "2017 - ".date('Y') : 2017;
+		echo "
+************************************************************************
+* copyright: (c) $copy_r_date Pedro Ruiz Hidalgo @pedroruizhidalg 
+************************************************************************\n";
+	}
+
+	function compose($var)
+	{
+		return "echo '$var' >> ".$this->file;
+	}
+
+	function to_tail($var)
+	{
+		exec ($this->compose($var));
+	}
+
+	function action($command)
+	{
+		switch ($command) {
+			case 'help':
+			case 'h':
+			case '--h':
+				$this->title();
+				$this->author();
+				echo "\n\ntype bitacora a|add to add items in bitacora";
+				echo "\ntype bitacora help to view this help in bitacora\n\n";
+				break;
+
+			case 'a':
+			case 'add';
+				$now ='Entrada bitácora '.date('d-m-Y h:m:i');
+				exec ($this->compose(' '));
+				exec ($this->compose('***'));
+				exec ($this->compose("$now"));
+				exec ($this->compose('***'));
+
+			case '*';
+			default:
+				$this->title();
+				echo "\n\ntype bitacora help|h|--help to help\n\n";
+				break;
+		}
+	}
+}
+
+$bitac=new bitacora();
+
+$cmd = (isset($argv[1]) ? $argv[1] : NULL);
+
+$bitac->action(!is_null($cmd) ? $cmd : '*');
+
+if (! is_null($cmd))
+{
+	if ($cmd=='a' || $cmd =='add') 
+	{
+		$cmdline = new prompt();
+		$buffer1 = $cmdline->get("Título: ");
+		$buffer2 = $cmdline->get("Anotación: ");
+		$bitac->to_tail($buffer1);
+		$bitac->to_tail($buffer2);
+	}
+}
