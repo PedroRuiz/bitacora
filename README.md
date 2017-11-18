@@ -1,2 +1,2 @@
 # bitacora
-php from command line to write in a file
+php from command line to write into a file
