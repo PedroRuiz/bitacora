@@ -29,9 +29,11 @@ class prompt {
 class bitacora
 {
 	var $file="/home/pedro/bin/bitacora.txt";
+	
 
 	function title()
 	{
+		exec("clear");
 		echo " ______  __________________ _______  _______  _______  _______  _______ 
 (  ___ \ \__   __/\__   __/(  ___  )(  ____ \(  ___  )(  ____ )(  ___  )
 | (   ) )   ) (      ) (   | (   ) || (    \/| (   ) || (    )|| (   ) |
@@ -70,16 +72,23 @@ class bitacora
 				$this->title();
 				$this->author();
 				echo "\n\ntype bitacora a|add to add items in bitacora";
-				echo "\ntype bitacora help to view this help in bitacora\n\n";
+				echo "\ntype bitacora help to view this help in bitacora";
+				echo "\ntype bitacora l|line para escribir en una linea tabulada\n\n";
 				break;
 
 			case 'a':
-			case 'add';
+			case 'add':
 				$now ='Entrada bitácora '.date('d-m-Y h:m:i');
 				exec ($this->compose(' '));
 				exec ($this->compose('***'));
 				exec ($this->compose("$now"));
 				exec ($this->compose('***'));
+				break;
+
+			case 'l':
+			case 'line';
+				exec($this->compose(""));
+				break;
 
 			case '*';
 			default:
@@ -101,9 +110,19 @@ if (! is_null($cmd))
 	if ($cmd=='a' || $cmd =='add') 
 	{
 		$cmdline = new prompt();
-		$buffer1 = $cmdline->get("Título: ");
-		$buffer2 = $cmdline->get("Anotación: ");
-		$bitac->to_tail($buffer1);
-		$bitac->to_tail($buffer2);
+		$bitac->to_tail($cmdline->get("Título: "));
+		$bitac->to_tail($cmdline->get("Anotación: "));
+	}
+
+	if ($cmd=='l' || $cmd =='line') 
+	{
+		$cmdline = new prompt();
+		$title=($cmdline->get("Título (20 caracteres): "));
+		$note=($cmdline->get("Anotación: "));
+		$now=date('d-m-Y h:m:i');
+		$bitac->to_tail(sprintf("%s\t%10.20s\t\t%s",$now,$title,$note));
 	}
 }
+
+
+//>>> Termina incremental <<< 27
