@@ -1,0 +1,64 @@
+.TH bitacora
+.SH NOMBRE
+Bitacora es un script PHP para bash que aprovecha la estructura de los archivos .ini para realizar informes separados (si se quiere) por secciones.
+.SH SINOPSIS
+.br
+.B bitacora sections 
+.br
+lanza un listado de todas las secciones existentes.
+.br
+.B bitacora add [section]
+.br
+crea una seccion.
+.br
+.B bitacora addline [section] 'contenido' 
+.br
+añade 'contenido' a la sección [section]. 
+.br
+.B bitacora list [section | *]
+.br
+Lista el contenido de section. En caso de * lista todo. 
+.br
+.B bitacora printall [archivo]
+.br 
+genera [archivo] con el contenido de todas las secciones- 
+.br
+.B bitacora printsection [section] [archivo] 
+.br
+genera [archivo] con el contenido de [section]. 
+.br
+.B bitacora help
+muestra ayuda.
+.SH DESCRIPCIÓN
+Cada sección forma en el archivo .ini una estructura. El nombre de la sección el programa lo convierte a mayúsculas y lo sitúa entre corchetes, como las secciónes de los archivos .ini. Debajo de cada sección cada uno de los items estará compuesto por una marca de tiempo yyyymmddhhiiss, el signo igual y el contenido de la linea. 
+.br
+Para mostrar la marca de tiempo estarán formateadas dd-mm-yyyy hh:ii:ss.
+.SH CONFIGURATION
+bitacora está situado en /home/pedro/.bin/bitacora. Para configurarlo, tan solo hay que editarlo con un editor de texto plano y cambiar las variables:
+.br 
+public $folder (que es donde residen los archivos).
+.br 
+public $fileini (archivo donde se almacenarán los datos).
+.br 
+public $conffile (archivo de configuración). Ralmente tan solo contiene la cabecera de informe.
+
+.SH ARCHIVOS
+fileini
+.br
+conffile
+.br
+/usr/bin/php
+.br
+/bin/bash
+.br
+/usr/bin/env
+.br
+.br
+.SH AUTOR
+Pedro Ruiz Hidalgo
+.br
+(c) MIT license
+.br
+@pedroruizhidalg
+
+
